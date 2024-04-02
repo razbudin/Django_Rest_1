@@ -3,8 +3,9 @@ from django.shortcuts import render, get_object_or_404
 from django.views import View
 from .models import Post
 from .forms import SignUpForm, SignInForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 class MainView(View):
@@ -64,3 +65,8 @@ class SignInView(View):
                     None, "Неправильный пароль или учетная запись не существует")
                 return render(request, 'blogapp/signin.html', {'form': form})
         return render(request, 'blogapp/signin.html', context={'form': form})
+
+
+def sign_out(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
