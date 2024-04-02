@@ -15,15 +15,15 @@
       {% for post in page_obj %}
         <div class="col-md-4 d-flex">
           <div class="card mb-4">
-            <img src="media/{{ post.image }}" alt="" class="card-img-top" />
+            <img src="media/{{ post.image }}" alt="" width="348" height="300" class="card-img-top" />
             <div class="card-body">
-              <h4 class="card-text">{{ post.h1 }}</h4>
-              <div class="card-text">{{ post.description|safe|truncatechars:100 }}</div>
+              <h4 class="card-title">{{ post.h1 }}</h4>
+              <div class="card-text">{{ post.description|safe|truncatechars_html:100 }}</div>
             </div>
             <div class="card-footer">
               <div class="d-flex justify-content-between align-items-center mt 3">
                 <small class="text-muted">{{ post.created_at }}</small>
-                <a href="{{ post.url }}" class="btn btn btn-outline-secondary">Подробнее</a>
+                <a href="{% url 'post_detail' slug=post.url %}" class="btn btn btn-outline-secondary">Подробнее</a>
               </div>
             </div>
           </div>
