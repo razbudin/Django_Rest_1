@@ -19,9 +19,15 @@
                       {% endif %}
                     <a class="nav-link" href="{% url 'contact' %}">Контакты</a>
                   </div>
-                  <form class="d-flex" role="search">
-                      <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
-                      <button class="btn btn-outline-success me-2" type="submit">Найти</button>
+                <form action="{% url 'search_results' %}" method="get" class="d-flex">
+                    <input name="q" type="text" class="form-control" placeholder="Поиск" aria-label="Поиск">
+                    <button class="btn btn-outline-success me-2" type="submit">Поиск</button>
+                </form>
+
+                <form class="d-flex" role="search">
+                    <!-- <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск"> -->
+                    <!--   <button class="btn btn-outline-success me-2" type="submit">Найти</button> -->
+
                       {% if user.is_authenticated %}
                         <span class="navbar-text me-2">{{ user }}</span>
                         <a href="{% url 'signout' %}" class="btn btn-outline-light">Выход</a>

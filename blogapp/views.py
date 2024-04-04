@@ -6,6 +6,7 @@ from .forms import SignUpForm, SignInForm, FeedBackForm
 from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.db.models import Q
 
 
 class MainView(View):
@@ -100,4 +101,19 @@ class SuccessView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'blogapp/success.html', context={
             'title': "Спасибо!"
+        })
+
+
+class SearchResultView(View):
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('q')
+        results = ""
+        if query:
+            results = Post.objects.filter(
+                Q(h1__icontains=query) | Q(content__icontains=query)
+            )
+        return render(request, 'blogapp/search.html', context={
+            'title': 'Поиск',
+            'results': results,
+            'count': len(results)
         })
