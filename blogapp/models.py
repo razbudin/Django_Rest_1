@@ -16,3 +16,10 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class FeedBack(models.Model):
+    name = models.CharField(max_length=200)
+    subject = models.CharField(max_length=300)
+    email = models.CharField(max_length=150)
+    message = models.TextField()

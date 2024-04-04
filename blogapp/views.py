@@ -1,8 +1,8 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.views import View
-from .models import Post
-from .forms import SignUpForm, SignInForm
+from .models import Post, FeedBack
+from .forms import SignUpForm, SignInForm, FeedBackForm
 from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -70,3 +70,34 @@ class SignInView(View):
 def sign_out(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+
+class FeedBackView(View):
+    def get(self, request, *args, **kwargs):
+        form = FeedBackForm()
+        return render(request, 'blogapp/contact.html', context={
+            'form': form,
+            'title': "Написать мне"
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = FeedBackForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            feedback = FeedBack(name=name, email=email,
+                                subject=subject, message=message)
+            feedback.save()
+            return HttpResponseRedirect('success')
+        return render(request, 'blogapp/contact.html', context={
+            'form': form,
+        })
+
+
+class SuccessView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'blogapp/success.html', context={
+            'title': "Спасибо!"
+        })
